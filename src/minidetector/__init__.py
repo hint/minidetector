@@ -9,7 +9,7 @@ class Middleware(object):
         """ Adds a "mobile" attribute to the request which is True or False
             depending on whether the request should be considered to come from a
             small-screen device such as a phone or a PDA"""
-        if hasattr(request, 'session'):
+        if hasattr(request, 'session') and minidetector_settings.USE_SESSIONS:
             # session enabled
             if not request.session.get('mobile_checked', False):
                 # haven't checked if mobile yet - put in request and session

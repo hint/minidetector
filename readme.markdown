@@ -7,7 +7,7 @@ This mostly works using a list of search strings, though there are a couple of o
 
 It also includes a pretty extensive list of user agents to test against.
 
-If sessions are enabled subsequent requests obtain mobile attributes from the session without parsing the requestor's meta data.
+If sessions are enabled subsequent requests obtain mobile attributes from the session without parsing the requestor's meta data, unless `MINIDETECTOR_USE_SESSIONS` is set to `False` in `settings.py`.
 
 Optionally "mobile" requestors can be redirected to a mobile domain. If they come back to the non-mobile domain the presence of session data keeps them from be automatically redirected back to the mobile domain.
 
@@ -94,7 +94,7 @@ Redirect to mobile domain
 
 By default only the request is modified as described above. If `MOBILE_URL` is set to a non empty string and the request.mobile is True the requestor will be redirected to the `MOBILE_URL`. The `MOBILE_URL` setting can contain python format string substitutions (using the .format() string method) --- the variables `path` (request path without query string, such as `/page'), `full_path` (with query string, such as `/page?id=5` and `host` (HTTP host, such as `example.com`) are all available, so if you want to preserve the request path, set `MOBILE_URL` to a path such as `http://mobile.example.com/{full_path}`
 
-If sessions are enabled and a requestor returns to the non mobile site they will not be redirected again to the `MOBILE_URL` site.
+If sessions are enabled and a requestor returns to the non mobile site they will not be redirected again to the `MOBILE_URL` site (unless `MINIDETECTOR_USE_SESSIONS` is set to `False`).
 
 This also means that mobile clients that revisit the non-mobile site on a later visit while their session still exists on the server won't be redirected to the mobile version of the site. This behavior can be changed by setting `SESSION_EXPIRE_AT_BROWSER_CLOSE` to True or by setting `SESSION_COOKIE_AGE` to an appropriately short time.
 
