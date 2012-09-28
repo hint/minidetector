@@ -92,7 +92,7 @@ You can do the reverse for iphone and android (i.e. having them treat your site 
 Redirect to mobile domain
 ------------------------
 
-By default only the request is modified as described above. If `MOBILE_URL` is set to a non empty string and the request.mobile is True the requestor will be redirected to the `MOBILE_URL`.
+By default only the request is modified as described above. If `MOBILE_URL` is set to a non empty string and the request.mobile is True the requestor will be redirected to the `MOBILE_URL`. The `MOBILE_URL` setting can contain python format string substitutions (using the .format() string method) --- the variables `path` (request path without query string, such as `/page'), `full_path` (with query string, such as `/page?id=5` and `host` (HTTP host, such as `example.com`) are all available, so if you want to preserve the request path, set `MOBILE_URL` to a path such as `http://mobile.example.com/{full_path}`
 
 If sessions are enabled and a requestor returns to the non mobile site they will not be redirected again to the `MOBILE_URL` site.
 

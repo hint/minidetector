@@ -16,15 +16,34 @@ class Middleware(object):
                 Middleware.configure_request(request)
                 Middleware.set_session_from_request(request)
                 request.session['mobile_checked'] = True
-                if request.mobile and minidetector_settings.MOBILE_URL:
-                    return HttpResponseRedirect(minidetector_settings.MOBILE_URL)
+                if request.mobile:
+                    mobile_redirect = Middleware.get_mobile_redirect(request)
+                    if mobile_redirect:
+                        return mobile_redirect
             else:
                 # Make sure it doesn't try this again
                 Middleware.set_request_from_session(request)
         else:
             # sessions disabled - always do the work
             Middleware.configure_request(request)
+            if request.mobile:
+                mobile_redirect = Middleware.get_mobile_redirect(request)
+                if mobile_redirect:
+                    return mobile_redirect
         return None
+    
+    @staticmethod
+    def get_mobile_redirect(request):
+        if not minidetector_settings.MOBILE_URL:
+            return None
+        subs = {
+            'host': request.get_host(),
+            'path': request.path,
+            'full_path': request.get_full_path(),
+        }
+        mobile_url = minidetector_settings.MOBILE_URL.format(**subs)
+        return HttpResponseRedirect(mobile_url)
+        
 
     @staticmethod
     def set_session_from_request(request):
@@ -66,6 +85,8 @@ class Middleware(object):
         request.touch_device = False
         request.wide_device = True
 
+        print "DEBUG:", request.META
+
         if request.META.has_key("HTTP_X_OPERAMINI_FEATURES"):
             #Then it's running opera mini. 'Nuff said.
             #Reference from:
@@ -87,6 +108,7 @@ class Middleware(object):
             # algorithm. Certainly more so than regexes.
             # Also, Caching didn't help much, with real-world caches.
             s = request.META["HTTP_USER_AGENT"].lower()
+            print "checking user agent", s
 
             if 'applewebkit' in s:
                 request.browser_is_webkit = True
