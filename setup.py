@@ -7,6 +7,7 @@ setup(
     long_description = open("readme.markdown").read(),
     author='metamoof, Chris Drackett, Steve Schwarz',
     url = "http://code.google.com/p/minidetector/",
+    package_dir = 'src',
     packages = [
         "minidetector",
         "minidetector.tests",
