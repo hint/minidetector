@@ -11,6 +11,8 @@ If sessions are enabled subsequent requests obtain mobile attributes from the se
 
 Optionally "mobile" requestors can be redirected to a mobile domain. If they come back to the non-mobile domain the presence of session data keeps them from be automatically redirected back to the mobile domain.
 
+Adapted from `http://code.google.com/p/minidetector/`
+
 Installation
 ============
 
