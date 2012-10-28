@@ -85,8 +85,6 @@ class Middleware(object):
         request.touch_device = False
         request.wide_device = True
 
-        print "DEBUG:", request.META
-
         if request.META.has_key("HTTP_X_OPERAMINI_FEATURES"):
             #Then it's running opera mini. 'Nuff said.
             #Reference from:
